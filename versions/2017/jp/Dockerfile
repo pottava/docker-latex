@@ -4,6 +4,9 @@
 
 FROM pottava/latex:2017
 
-RUN tlmgr install \
+RUN apk --no-cache add --virtual build-deps fontconfig \
+    && tlmgr install \
       collection-latexrecommended collection-fontsrecommended \
-      collection-latexextra collection-langjapanese
+      collection-latexextra collection-langjapanese \
+    && fc-cache -fv \
+    && apk del --purge -r build-deps
