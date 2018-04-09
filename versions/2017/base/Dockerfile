@@ -22,7 +22,7 @@ RUN apk --no-cache add --virtual build-deps bash curl libgcc \
     && rm -rf glibc-*.apk
 
 RUN apk --no-cache add icu-libs --repository http://dl-3.alpinelinux.org/alpine/edge/main \
-    && apk --no-cache add --virtual build-deps xz fontconfig-dev \
+    && apk --no-cache add --virtual build-deps xz fontconfig \
     && cd /tmp \
     && wget --quiet ftp://tug.org/historic/systems/texlive/2017/install-tl-unx.tar.gz \
     && tar --strip-components=1 -xf install-tl-unx.tar.gz \
@@ -37,6 +37,7 @@ RUN apk --no-cache add icu-libs --repository http://dl-3.alpinelinux.org/alpine/
     && ./install-tl --profile=/tmp/texlive.profile \
     && tlmgr install collection-basic collection-latex latexmk \
     && ( tlmgr install xetex || exit 0 ) \
+    && fc-cache -fv \
     && apk del --purge -r build-deps icu-libs \
     && rm -rf /tmp/*
 
